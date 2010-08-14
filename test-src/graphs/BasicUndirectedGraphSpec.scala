@@ -66,4 +66,25 @@ class BasicUndirectedGraphSpec extends FlatSpec with ShouldMatchers {
     (g connects (2,1)) should be (true)
   }
 
+  it can "find the neighborhood" in {
+    val g = emptyGraph
+    g addEdge (1,2)
+    g addEdge (2,3)
+    g add 4
+    (g neighborsOf 1) should be (Set(2))
+    (g neighborsOf 2) should be (Set(1,3))
+    (g neighborsOf 3) should be (Set(2))
+    (g neighborsOf 4) should be (Set())
+  }
+
+  it can "compute the degree" in {
+    val g = emptyGraph
+    g addEdge (1,2)
+    g addEdge (2,3)
+    g add 4
+    (g degreeOf 1) should be (1)
+    (g degreeOf 2) should be (2)
+    (g degreeOf 3) should be (1)
+    (g degreeOf 4) should be (0)
+  }
 }
