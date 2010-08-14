@@ -87,4 +87,18 @@ class BasicUndirectedGraphSpec extends FlatSpec with ShouldMatchers {
     (g degreeOf 3) should be (1)
     (g degreeOf 4) should be (0)
   }
+
+  it must "throw an exception when asking for the neighborhood of a node not present" in {
+    val g = emptyGraph
+    intercept[NoSuchElementException] {
+      g neighborsOf 1
+    }
+  }
+
+ it must "throw an exception when asking for the degree of a node not present" in {
+    val g = emptyGraph
+    intercept[NoSuchElementException] {
+      g degreeOf 1
+    }
+ }
 }

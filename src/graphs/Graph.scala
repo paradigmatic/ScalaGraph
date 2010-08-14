@@ -14,6 +14,10 @@ trait Graph[V] {
   def connects( v1: V, v2: V ) = edges exists ( _ connects (v1, v2) )
 
   def neighborsOf( vertex: V ) = {
+    if( ! contains(vertex) ) {
+      throw new NoSuchElementException("The vertex: "
+                                       +vertex+ " is not member of the graph")
+    }
     var hood = Set[V]()
     for( e <- edges if e.vertices.contains( vertex ) ) {
       hood ++= ( e.vertices - vertex )
