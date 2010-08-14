@@ -13,6 +13,9 @@ trait Graph[V] {
 
   def connects( v1: V, v2: V ) = edges exists ( _ connects (v1, v2) )
 
+  def incidentEdgesOf( vertex: V ):Set[E] = 
+    edges filter (_ contains vertex)
+
   def neighborsOf( vertex: V ) = {
     if( ! contains(vertex) ) {
       throw new NoSuchElementException("The vertex: "
@@ -27,9 +30,6 @@ trait Graph[V] {
 
   def degreeOf( vertex: V ) = neighborsOf(vertex).size
 
-  def incidentEdgesOf( vertex: V ):Set[E] = 
-    edges filter (_ contains vertex)
-
   trait Edge[V] {
     def connects( v1: V, v2: V ): Boolean
     def vertices(): Set[V]
@@ -41,8 +41,12 @@ trait Graph[V] {
 trait Modifiable[V] { 
   self: Graph[V] =>
   def add( vertex: V ): Boolean
+  def add( vertices: Traversable[V] ): Boolean = 
+    vertices.foldLeft(false)( _ | add(_) )
   def add( edge: E ): Boolean
   def remove( vertex: V): Boolean
+  def remove( vertices: Traversable[V] ): Boolean = 
+    vertices.foldLeft(false)( _ | remove(_) ) 
   def remove( edge: E): Boolean
 }
 

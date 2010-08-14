@@ -160,4 +160,32 @@ class BasicUndirectedGraphSpec extends FlatSpec with ShouldMatchers {
     g.incidentEdgesOf(4).size should be (2)
   }
 
+  it can "add several vertices" in {
+    val g = emptyGraph
+    g add List(1,3,5)
+    g.vertices should be (Set(1,3,5))
+  }
+
+  it should "return true if the graph is modified when adding several vertices" in {
+    val g = emptyGraph
+    g add 1
+    (g add List(1,1,1,1)) should be (false)
+    (g add List(1,1,1,2)) should be (true)
+    g.vertices.size should be (2)
+  }
+
+  it can "remove several vertices" in {
+    val g = emptyGraph
+    g add List(1,3,5,7)
+    g remove List(3,5)
+    g.vertices should be (Set(1,7))
+  }
+
+   it should "return true if the graph is modified when removing several vertices" in {
+     val g = emptyGraph
+     g add List(1,3,5,7)
+     g.remove(List(2,2,2)) should be (false)
+     g.remove(List(1,1,1)) should be (true)
+   }
+
 }
