@@ -101,4 +101,50 @@ class BasicUndirectedGraphSpec extends FlatSpec with ShouldMatchers {
       g degreeOf 1
     }
  }
+
+  it can "remove edges" in {
+    val g = emptyGraph
+    g addEdge (1,2)
+    g.connects(1,2) should be (true)
+    val e = g.edges.toList.head
+    g remove e
+    g.connects(1,2) should be (false)
+    g.edges should be ('empty)
+  }
+
+  it should "reply true iff edge exists when removing it" in {
+    val g = emptyGraph
+    g addEdge (1,2)
+    val e = g.edges.toList.head
+    (g remove e) should be (true)
+    (g remove e) should be (false)
+  }
+
+  it can "remove vertex" in {
+    val g = emptyGraph
+    g add 1
+    g add 2
+    g.vertices.contains(1) should be (true)
+    g remove 1
+    g.vertices.contains(1) should be (false)
+    g.vertices.contains(2) should be (true)
+  }
+
+  it should "reply true iff vertex exists when removing it" in {
+    val g = emptyGraph
+    g add 1
+    g add 2
+    (g remove 1) should be (true)
+    (g remove 1) should be (false)
+    (g remove 2) should be (true)
+  }
+
+  it should "remove incident edges when removing a vertex" in {
+    val g = emptyGraph
+    g addEdge (1,2)
+    g.edges.size should be (1)
+    g remove 1
+    g.edges.size should be (0)
+    (g contains 2) should be (true) 
+  }
 }

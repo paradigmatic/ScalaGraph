@@ -47,4 +47,16 @@ class BasicUndirectedGraph[V] extends UndirectedGraph[V] with Modifiable[V]{
 
   def addEdge( v1: V, v2: V ) = add( new UndirectedEdge(v1,v2) )
 
+  def remove( vertex: V) = if( vertices contains vertex ) {
+    vertices -= vertex
+    for( e <- edges if e.vertices contains vertex ) {
+      remove(e)
+    }
+    true
+  } else false
+  
+  def remove( edge: E) = if( edges contains edge ) {
+    edges -= edge
+    true 
+  } else false
 }

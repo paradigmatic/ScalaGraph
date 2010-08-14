@@ -38,6 +38,8 @@ trait Modifiable[V] {
   self: Graph[V] =>
   def add( vertex: V ): Boolean
   def add( edge: E ): Boolean
+  def remove( vertex: V): Boolean
+  def remove( edge: E): Boolean
 }
 
 trait SimpleGraph[V] extends Graph[V] {
