@@ -52,10 +52,18 @@ class BasicUndirectedGraphSpec extends FlatSpec with ShouldMatchers {
     (g addEdge (1,2)) should be (false)
   }
 
+  it should "not add several time the same edge" in {
+    val g = emptyGraph
+    g addEdge (1,2)
+    (g addEdge (2,1)) should be (false)
+    g.edges.size should be (1)
+  }
+
   it should "have undirected edges" in {
     val g = emptyGraph
     g addEdge (1,2)
-    pending
+    (g connects (1,2)) should be (true)
+    (g connects (2,1)) should be (true)
   }
 
 }
