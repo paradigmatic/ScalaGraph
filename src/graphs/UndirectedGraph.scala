@@ -49,7 +49,7 @@ class BasicUndirectedGraph[V] extends UndirectedGraph[V] with Modifiable[V]{
 
   def remove( vertex: V) = if( vertices contains vertex ) {
     vertices -= vertex
-    for( e <- edges if e.vertices contains vertex ) {
+    for( e <- incidentEdgesOf(vertex) ) {
       remove(e)
     }
     true

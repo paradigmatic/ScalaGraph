@@ -147,4 +147,17 @@ class BasicUndirectedGraphSpec extends FlatSpec with ShouldMatchers {
     g.edges.size should be (0)
     (g contains 2) should be (true) 
   }
+
+  it can "find the incident edges of a vertex" in {
+    val g = emptyGraph
+    g addEdge (1,2)
+    g addEdge (2,3)
+    g addEdge (2,4)
+    g addEdge (1,4)
+    g.incidentEdgesOf(1).size should be (2)
+    g.incidentEdgesOf(2).size should be (3)
+    g.incidentEdgesOf(3).size should be (1)
+    g.incidentEdgesOf(4).size should be (2)
+  }
+
 }

@@ -19,7 +19,7 @@ trait Graph[V] {
                                        +vertex+ " is not member of the graph")
     }
     var hood = Set[V]()
-    for( e <- edges if e.vertices.contains( vertex ) ) {
+    for( e <- incidentEdgesOf(vertex) ) {
       hood ++= ( e.vertices - vertex )
     }
     hood
@@ -27,9 +27,13 @@ trait Graph[V] {
 
   def degreeOf( vertex: V ) = neighborsOf(vertex).size
 
+  def incidentEdgesOf( vertex: V ):Set[E] = 
+    edges filter (_ contains vertex)
+
   trait Edge[V] {
     def connects( v1: V, v2: V ): Boolean
     def vertices(): Set[V]
+    def contains( vertex: V ) = vertices contains vertex
   }
 
 }
