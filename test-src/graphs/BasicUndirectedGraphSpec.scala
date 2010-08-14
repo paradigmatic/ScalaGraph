@@ -32,14 +32,14 @@ class BasicUndirectedGraphSpec extends FlatSpec with ShouldMatchers {
     g add 1
     g add 2
     g add 3
-    g.addEdge(1,2)
+    g.connect(1,2)
     ( g.connects(1,2) ) should be (true)
     ( g.connects(1,3) ) should be (false)
   }
 
   it should "add vertices that are not in the graph when creating edge" in {
     val g = emptyGraph
-    g addEdge (1,2)
+    g connect (1,2)
     (g contains 1) should be (true)
     (g contains 2) should be (true)
     (g connects (1,2)) should be (true)
@@ -47,29 +47,29 @@ class BasicUndirectedGraphSpec extends FlatSpec with ShouldMatchers {
 
   it should "return true iff the graph is modified when adding an edge" in {
     val g = emptyGraph
-    (g addEdge (1,2)) should be (true)
-    (g addEdge (1,3)) should be (true)
-    (g addEdge (1,2)) should be (false)
+    (g connect (1,2)) should be (true)
+    (g connect (1,3)) should be (true)
+    (g connect (1,2)) should be (false)
   }
 
   it should "not add several time the same edge" in {
     val g = emptyGraph
-    g addEdge (1,2)
-    (g addEdge (2,1)) should be (false)
+    g connect (1,2)
+    (g connect (2,1)) should be (false)
     g.edges.size should be (1)
   }
 
   it should "have undirected edges" in {
     val g = emptyGraph
-    g addEdge (1,2)
+    g connect (1,2)
     (g connects (1,2)) should be (true)
     (g connects (2,1)) should be (true)
   }
 
   it can "find the neighborhood" in {
     val g = emptyGraph
-    g addEdge (1,2)
-    g addEdge (2,3)
+    g connect (1,2)
+    g connect (2,3)
     g add 4
     (g neighborsOf 1) should be (Set(2))
     (g neighborsOf 2) should be (Set(1,3))
@@ -79,8 +79,8 @@ class BasicUndirectedGraphSpec extends FlatSpec with ShouldMatchers {
 
   it can "compute the degree" in {
     val g = emptyGraph
-    g addEdge (1,2)
-    g addEdge (2,3)
+    g connect (1,2)
+    g connect (2,3)
     g add 4
     (g degreeOf 1) should be (1)
     (g degreeOf 2) should be (2)
@@ -104,20 +104,20 @@ class BasicUndirectedGraphSpec extends FlatSpec with ShouldMatchers {
 
   it can "remove edges" in {
     val g = emptyGraph
-    g addEdge (1,2)
+    g connect (1,2)
     g.connects(1,2) should be (true)
     val e = g.edges.toList.head
-    g remove e
+    g disconnect e
     g.connects(1,2) should be (false)
     g.edges should be ('empty)
   }
 
   it should "reply true iff edge exists when removing it" in {
     val g = emptyGraph
-    g addEdge (1,2)
+    g connect (1,2)
     val e = g.edges.toList.head
-    (g remove e) should be (true)
-    (g remove e) should be (false)
+    (g disconnect e) should be (true)
+    (g disconnect e) should be (false)
   }
 
   it can "remove vertex" in {
@@ -141,7 +141,7 @@ class BasicUndirectedGraphSpec extends FlatSpec with ShouldMatchers {
 
   it should "remove incident edges when removing a vertex" in {
     val g = emptyGraph
-    g addEdge (1,2)
+    g connect (1,2)
     g.edges.size should be (1)
     g remove 1
     g.edges.size should be (0)
@@ -150,10 +150,10 @@ class BasicUndirectedGraphSpec extends FlatSpec with ShouldMatchers {
 
   it can "find the incident edges of a vertex" in {
     val g = emptyGraph
-    g addEdge (1,2)
-    g addEdge (2,3)
-    g addEdge (2,4)
-    g addEdge (1,4)
+    g connect (1,2)
+    g connect (2,3)
+    g connect (2,4)
+    g connect (1,4)
     g.incidentEdgesOf(1).size should be (2)
     g.incidentEdgesOf(2).size should be (3)
     g.incidentEdgesOf(3).size should be (1)
@@ -187,5 +187,22 @@ class BasicUndirectedGraphSpec extends FlatSpec with ShouldMatchers {
      g.remove(List(2,2,2)) should be (false)
      g.remove(List(1,1,1)) should be (true)
    }
+
+  it can "remove several edges" in {
+    val g = emptyGraph
+    g connect (1,2)
+    g connect (2,3)
+    g connect (2,4)
+    val (keep :: remove) = g.edges.filter( _ contains 1).toList
+    g disconnect remove
+    (g.edges contains keep) should be (true)
+    (remove exists ( g.edges contains _ )) should be (false)
+  }
+
+  it can "produce an empty graph" in {
+    val g = emptyGraph
+    val g2 = g.newGraph
+    g.getClass should be (g2.getClass)
+  }
 
 }

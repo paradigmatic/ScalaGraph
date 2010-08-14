@@ -40,14 +40,24 @@ trait Graph[V] {
 
 trait Modifiable[V] { 
   self: Graph[V] =>
+
+  type G <: Modifiable[V]
+
   def add( vertex: V ): Boolean
+  def connect( edge: E ): Boolean
+  def remove( vertex: V): Boolean
+  def disconnect( edge: E): Boolean
+  def newGraph(): G
+  //def copy(): G
+
   def add( vertices: Traversable[V] ): Boolean = 
     vertices.foldLeft(false)( _ | add(_) )
-  def add( edge: E ): Boolean
-  def remove( vertex: V): Boolean
-  def remove( vertices: Traversable[V] ): Boolean = 
-    vertices.foldLeft(false)( _ | remove(_) ) 
-  def remove( edge: E): Boolean
+
+  def remove( vertices: Traversable[V] )(implicit m: Manifest[V]): Boolean = 
+    vertices.foldLeft(false)( _ | remove(_) )
+
+  def disconnect( edges: Traversable[E] )(implicit m:Manifest[E]): Boolean =
+    edges.foldLeft(false)( _ |  disconnect(_) )
 }
 
 trait SimpleGraph[V] extends Graph[V] {

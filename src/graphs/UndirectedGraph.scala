@@ -26,8 +26,19 @@ trait UndirectedGraph[V] extends SimpleGraph[V] {
 }
 
 class BasicUndirectedGraph[V] extends UndirectedGraph[V] with Modifiable[V]{
+  type G = BasicUndirectedGraph[V]
+
   var edges = Set[E]()
   var vertices = Set[V]()
+
+  def newGraph() = new BasicUndirectedGraph[V]()
+  
+/*
+  def copy() = {
+    val g = new BasicUndirectedGraph[V]()
+    for( e <- edges ) { g connect e }
+    g
+  }*/
 
   def add( vertex: V ) = if( vertices contains vertex ) {
     false
@@ -36,7 +47,7 @@ class BasicUndirectedGraph[V] extends UndirectedGraph[V] with Modifiable[V]{
     true
   }
 
-  def add( edge: E ) = if( edges contains edge ) {
+  def connect( edge: E ): Boolean = if( edges contains edge ) {
     false
   } else {
     add( edge.first )
@@ -45,17 +56,17 @@ class BasicUndirectedGraph[V] extends UndirectedGraph[V] with Modifiable[V]{
     true
   }
 
-  def addEdge( v1: V, v2: V ) = add( new UndirectedEdge(v1,v2) )
+  def connect( v1: V, v2: V ): Boolean = connect( new UndirectedEdge(v1,v2) )
 
   def remove( vertex: V) = if( vertices contains vertex ) {
     vertices -= vertex
     for( e <- incidentEdgesOf(vertex) ) {
-      remove(e)
+      disconnect(e)
     }
     true
   } else false
   
-  def remove( edge: E) = if( edges contains edge ) {
+  def disconnect( edge: E) = if( edges contains edge ) {
     edges -= edge
     true 
   } else false
