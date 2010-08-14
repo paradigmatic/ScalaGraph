@@ -2,30 +2,11 @@ package sg.graphs
 
 import scala.collection.Set
 
-trait UndirectedGraph[V] extends SimpleGraph[V] {
-
+trait UndirectedGraph[V] extends SimpleGraph[V,UndirectedEdge[V]] {
   type E = UndirectedEdge[V]
-
-  class UndirectedEdge[V](val first: V, val second: V ) extends SimpleEdge[V] {
-
-    val vertices = Set( first, second )
-
-    def connects(v1: V, v2: V) = 
-      (vertices contains v1 ) && (vertices contains v2 ) 
-
-    override def equals(other: Any) = other match {
-      case that : UndirectedEdge[_] => {
-        that.isInstanceOf[UndirectedEdge[_]] &&
-        this.vertices == that.vertices
-      }
-      case _ => false
-    }
-
-    override def hashCode() = vertices.hashCode
-  }
 }
 
-class BasicUndirectedGraph[V] extends UndirectedGraph[V] with Modifiable[V]{
+class BasicUndirectedGraph[V] extends UndirectedGraph[V] with Modifiable[V,UndirectedGraph[V]#E]{
   type G = BasicUndirectedGraph[V]
 
   var edges = Set[E]()

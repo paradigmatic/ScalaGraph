@@ -2,8 +2,7 @@ package sg.graphs
 
 import scala.collection.Set
 
-trait Graph[V] {
-  type E <: Edge[V]
+trait Graph[V,E <: Edge[V]] {
 
   def vertices: Set[V]
 
@@ -30,18 +29,12 @@ trait Graph[V] {
 
   def degreeOf( vertex: V ) = neighborsOf(vertex).size
 
-  trait Edge[V] {
-    def connects( v1: V, v2: V ): Boolean
-    def vertices(): Set[V]
-    def contains( vertex: V ) = vertices contains vertex
-  }
-
 }
 
-trait Modifiable[V] { 
-  self: Graph[V] =>
+trait Modifiable[V,E <: Edge[V]] { 
+  self: Graph[V,E] =>
 
-  type G <: Modifiable[V]
+  type G <: Modifiable[V,E]
 
   def add( vertex: V ): Boolean
   def connect( edge: E ): Boolean
@@ -60,10 +53,4 @@ trait Modifiable[V] {
     edges.foldLeft(false)( _ |  disconnect(_) )
 }
 
-trait SimpleGraph[V] extends Graph[V] {
-  type E <: SimpleEdge[V]
-  trait SimpleEdge[V] extends Edge[V] {
-    def first(): V
-    def second(): V
-  }
-}
+trait SimpleGraph[V,E <: SimpleEdge[V]] extends Graph[V,E]
