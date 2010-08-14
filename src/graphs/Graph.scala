@@ -41,7 +41,7 @@ trait Graph[V,E <: Edge[V]] {
 trait Modifiable[V,E <: Edge[V]] { 
   self: Graph[V,E] =>
 
-  type G <: Modifiable[V,E]
+  type G <: Graph[V,E] with Modifiable[V,E]
 
   def add( vertex: V ): Boolean
   def connect( edge: E ): Boolean
