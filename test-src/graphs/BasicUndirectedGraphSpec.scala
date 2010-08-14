@@ -205,4 +205,39 @@ class BasicUndirectedGraphSpec extends FlatSpec with ShouldMatchers {
     g.getClass should be (g2.getClass)
   }
 
+  it can "check for equality" in {
+    val g = emptyGraph
+    g connect (1,2)
+    g connect (2,3)
+    g should be (g)
+    val g1 = emptyGraph
+    g connect (1,2)
+    g connect (2,3)
+    g1 should not be (g)
+    val g2 = emptyGraph
+    g connect (1,2)
+    g add 3
+    g2 should not be (g)
+  }
+
+  it should "produce a valid hashcode" in {
+    val g = emptyGraph
+    g connect (1,2)
+    g connect (2,3)
+    val g1 = emptyGraph
+    g1 connect (1,2)
+    g1 connect (2,3)
+    g1.hashCode should be (g.hashCode)
+  }
+
+  it can "produce copies of itself" in {
+    val g = emptyGraph
+    g connect (1,2)
+    g connect (2,3)
+    val g1 = g.copy
+    g should be (g1)
+    g should not be theSameInstanceAs (g1)
+  }
+    
+
 }

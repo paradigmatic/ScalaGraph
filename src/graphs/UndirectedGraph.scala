@@ -14,12 +14,11 @@ class BasicUndirectedGraph[V] extends UndirectedGraph[V] with Modifiable[V,Undir
 
   def newGraph() = new BasicUndirectedGraph[V]()
   
-/*
   def copy() = {
     val g = new BasicUndirectedGraph[V]()
     for( e <- edges ) { g connect e }
     g
-  }*/
+  }
 
   def add( vertex: V ) = if( vertices contains vertex ) {
     false

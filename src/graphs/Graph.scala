@@ -29,6 +29,13 @@ trait Graph[V,E <: Edge[V]] {
 
   def degreeOf( vertex: V ) = neighborsOf(vertex).size
 
+  override def equals( other: Any ) = other match {
+    case that: Graph[_,_] => (vertices == that.vertices && edges == that.edges)
+    case _ => false
+  }
+  
+  override def hashCode = 17*(31 + 17 * vertices.hashCode)*edges.hashCode
+
 }
 
 trait Modifiable[V,E <: Edge[V]] { 
@@ -41,7 +48,7 @@ trait Modifiable[V,E <: Edge[V]] {
   def remove( vertex: V): Boolean
   def disconnect( edge: E): Boolean
   def newGraph(): G
-  //def copy(): G
+  def copy(): G
 
   def add( vertices: Traversable[V] ): Boolean = 
     vertices.foldLeft(false)( _ | add(_) )
