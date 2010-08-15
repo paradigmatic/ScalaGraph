@@ -20,6 +20,14 @@ class ConnectedComponentsSpec extends FlatSpec with ShouldMatchers {
     sizes should contain (4)
     sizes should contain (2)
     sizes should contain (1)
+    val all = comps.foldLeft( Set[Int]() )( _ ++ _.vertices )
+    all should be (g.vertices)
+  }
+
+  it should "return an empty list if the graph is empty" in {
+    val g = new BasicUndirectedGraph[Int]()
+    val comps = ConnectedComponents.of( g )
+    comps should have size (0)
   }
 
 }
