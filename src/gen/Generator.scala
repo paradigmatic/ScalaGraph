@@ -3,9 +3,10 @@ package sg.gen
 import sg.graphs._
 import scala.collection.Iterable
 
-trait GraphGenerator[V,E <: Edge[V]] {
+trait UndirectedGraphGenerator[V] {
 
-  def apply[G <:Graph[V,E] with Modifiable[V,E]]( emptyGraph: G ): G
+  def apply[G <:UndirectedGraph[V] with Modifiable[V,_]]
+  ( graph: G ): G
 
 }
 

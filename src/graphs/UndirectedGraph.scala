@@ -4,6 +4,7 @@ import scala.collection.Set
 
 trait UndirectedGraph[V] extends SimpleGraph[V,UndirectedEdge[V]] {
   type E = UndirectedEdge[V]
+  def connect( v1: V, v2: V ): Boolean
 }
 
 class BasicUndirectedGraph[V] extends UndirectedGraph[V] with Modifiable[V,UndirectedGraph[V]#E]{
